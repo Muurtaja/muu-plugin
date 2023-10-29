@@ -13,6 +13,7 @@ class Admin extends BaseController
 
     public $settings;
     public $pages;
+    public $sub_pages;
 
     public function __construct()
     {
@@ -28,25 +29,48 @@ class Admin extends BaseController
                 },
                 'icon_url'   => 'dashicons-store',
                 'position'   => 110
+            ]
+        ];
+        $this->sub_pages = [
+            [
+                'parent_slug' => 'muu_plugin',
+                'page_title'  => 'Custom post type',
+                'menu_title'  => 'CPT',
+                'capability'  => 'manage_options',
+                'menu_slug'   => 'muu_cpt',
+                'callback'    => function () {
+                    echo "<h1>CPT Manager</h1>";
+                }
             ],
             [
-                'page_title' => 'Test Plugin',
-                'menu_title' => 'Test',
-                'capability' => 'manage_options',
-                'menu_slug'  => 'test_plugin',
-                'callback'   => function () {
-                    echo "<h1>Test plugin</h1>";
-                },
-                'icon_url'   => 'dashicons-external',
-                'position'   => 110
-            ]
+                'parent_slug' => 'muu_plugin',
+                'page_title'  => 'Custom taxonomies',
+                'menu_title'  => 'Taxonomies',
+                'capability'  => 'manage_options',
+                'menu_slug'   => 'muu_taxonomies',
+                'callback'    => function () {
+                    echo "<h1>Taxonomies Manager</h1>";
+                }
+            ],
+            [
+                'parent_slug' => 'muu_plugin',
+                'page_title'  => 'Custom widgets',
+                'menu_title'  => 'Widgets',
+                'capability'  => 'manage_options',
+                'menu_slug'   => 'muu_widgets',
+                'callback'    => function () {
+                    echo "<h1>Widgets Manager</h1>";
+                }
+            ],
         ];
     }
 
     public function register()
     {
-
-        $this->settings->addPages($this->pages)->register();
+        $this->settings->addPages($this->pages)
+            ->withSubPage('Dashboard')
+            ->addSubPage($this->sub_pages)
+            ->register();
     }
 
 
