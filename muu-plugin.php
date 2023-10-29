@@ -38,16 +38,38 @@ function_exists('add_action') || die('Hey, you cannot access this file!');
 
 class MuuPlugin
 {
+    public $plugin;
     public function __construct()
     {
         add_action('init', [$this, 'customPostType']);
+        $this->plugin = plugin_basename(__FILE__);
     }
 
     function register()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue']);
+        add_action('admin_menu', [$this, 'add_admin_pages']);
+
+        add_filter('plugin_action_links_' . $this->plugin, [$this, 'settings_link']);
     }
 
+    public function settings_link($links = [])
+    {
+
+        if (!is_array($links)) $links = [];
+        $links[] = '<a href="admin.php?page=muu_plugin">Settings</a>';
+
+        return $links;
+    }
+
+    public function add_admin_pages()
+    {
+        add_menu_page('Muu Plugin', 'Muu', 'manage_options', 'muu_plugin', [$this, 'admin_index'], 'dashicons-store', 110);
+    }
+    function admin_index()
+    {
+        require_once plugin_dir_path(__FILE__) . 'templates/admin.php';
+    }
     function activate()
     {
         // generate a CPT
@@ -78,8 +100,12 @@ if (class_exists('MuuPlugin')) {
     $muuPlugin->register();
 }
 
+
+require_once plugin_dir_path(__FILE__) . 'inc/muu-plugin-activate.php';
+require_once plugin_dir_path(__FILE__) . 'inc/muu-plugin-deactivate.php';
+
 // activation
-register_activation_hook(__FILE__, [$muuPlugin, 'activate']);
+register_activation_hook(__FILE__, ['MuuPluginActivate', 'activate']);
 
 // deactivation 
-register_deactivation_hook(__FILE__, [$muuPlugin, 'deactivate']);
+register_deactivation_hook(__FILE__, ['MuuPluginDeactivate', 'deactivate']);
