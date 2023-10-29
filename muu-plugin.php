@@ -42,6 +42,12 @@ class MuuPlugin
     {
         add_action('init', [$this, 'customPostType']);
     }
+
+    function register()
+    {
+        add_action('admin_enqueue_scripts', [$this, 'enqueue']);
+    }
+
     function activate()
     {
         // generate a CPT
@@ -59,10 +65,17 @@ class MuuPlugin
     {
         register_post_type('books', ['public' => true, 'label' => 'Books']);
     }
+
+    function enqueue()
+    {
+        wp_enqueue_style('mypluginstyle', plugins_url('/assets/css/my-style.css', __FILE__));
+        wp_enqueue_script('mypluginscript', plugins_url('/assets/js/my-script.js', __FILE__));
+    }
 }
 
 if (class_exists('MuuPlugin')) {
     $muuPlugin = new MuuPlugin();
+    $muuPlugin->register();
 }
 
 // activation
