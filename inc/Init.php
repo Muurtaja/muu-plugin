@@ -6,6 +6,7 @@
 namespace Inc;
 
 use Inc\Base\Enqueue;
+use Inc\Base\SettingsLinks;
 use Inc\Pages\Admin;
 
 class Init
@@ -16,6 +17,7 @@ class Init
         return [
             Admin::class,
             Enqueue::class,
+            SettingsLinks::class,
         ];
     }
 

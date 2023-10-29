@@ -7,9 +7,14 @@ namespace Inc\Pages;
 
 class Admin
 {
+
+    protected $plugin_path;
+
     public function __construct()
     {
+        $this->plugin_path = PLUGIN_PATH;
     }
+
     public function register()
     {
         add_action('admin_menu', [$this, 'add_admin_pages']);
@@ -20,6 +25,6 @@ class Admin
     }
     function admin_index()
     {
-        require_once PLUGIN_PATH . 'templates/admin.php';
+        require_once "{$this->plugin_path}templates/admin.php";
     }
 }

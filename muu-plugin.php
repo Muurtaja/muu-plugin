@@ -47,76 +47,11 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
 
 define('PLUGIN_PATH',  plugin_dir_path(__FILE__));
 define('PLUGIN_URL',  plugin_dir_url(__FILE__));
+define('PLUGIN',  plugin_basename(__FILE__));
 
 if (class_exists('Inc\\Init')) {
     Init::register_services();
 }
 
-
-
-
-
-// class MuuPlugin
-// {
-//     public $plugin;
-//     public function __construct()
-//     {
-//         add_action('init', [$this, 'customPostType']);
-//         $this->plugin = plugin_basename(__FILE__);
-//     }
-
-//     function register()
-//     {
-//         add_action('admin_enqueue_scripts', [$this, 'enqueue']);
-
-
-//         add_filter('plugin_action_links_' . $this->plugin, [$this, 'settings_link']);
-//     }
-
-//     public function settings_link($links = [])
-//     {
-
-//         if (!is_array($links)) $links = [];
-//         $links[] = '<a href="admin.php?page=muu_plugin">Settings</a>';
-
-//         return $links;
-//     }
-
-
-//     function activate()
-//     {
-//         // generate a CPT
-//         $this->customPostType();
-//         // flush rewrite rules
-//         flush_rewrite_rules();
-//     }
-//     function deactivate()
-//     {
-//         // flush rewrite rules
-//         flush_rewrite_rules();
-//     }
-
-//     function customPostType()
-//     {
-//         register_post_type('books', ['public' => true, 'label' => 'Books']);
-//     }
-
-//     function enqueue()
-//     {
-//         wp_enqueue_style('mypluginstyle', plugins_url('/assets/css/my-style.css', __FILE__));
-//         wp_enqueue_script('mypluginscript', plugins_url('/assets/js/my-script.js', __FILE__));
-//     }
-// }
-
-// if (class_exists('MuuPlugin')) {
-//     $muuPlugin = new MuuPlugin();
-//     $muuPlugin->register();
-// }
-
-
-
-// activation
 register_activation_hook(__FILE__, [Activate::class, 'activate']);
-
-// deactivation 
 register_deactivation_hook(__FILE__, [Deactivate::class, 'deactivate']);

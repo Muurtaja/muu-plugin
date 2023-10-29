@@ -7,9 +7,15 @@ namespace Inc\Base;
 
 class Enqueue
 {
+
+    protected $plugin_url;
+
     public function __construct()
     {
+        $this->plugin_url = PLUGIN_URL;
     }
+
+
     public function register()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue']);
@@ -17,7 +23,7 @@ class Enqueue
 
     public function enqueue()
     {
-        wp_enqueue_style('mypluginstyle', PLUGIN_URL . 'assets/css/my-style.css');
-        wp_enqueue_script('mypluginscript', PLUGIN_URL . 'assets/js/my-script.js');
+        wp_enqueue_style('mypluginstyle', "{$this->plugin_url}assets/css/my-style.css");
+        wp_enqueue_script('mypluginscript',  "{$this->plugin_url}assets/js/my-script.js");
     }
 }
