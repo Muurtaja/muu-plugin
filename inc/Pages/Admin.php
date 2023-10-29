@@ -7,6 +7,7 @@ namespace Inc\Pages;
 
 use Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
+use Inc\Api\Callbacks\AdminCallbacks;
 
 class Admin extends BaseController
 {
@@ -14,23 +15,40 @@ class Admin extends BaseController
     public $settings;
     public $pages;
     public $sub_pages;
+    public $callbacks;
 
-    public function __construct()
+    public function register()
     {
         $this->settings = new SettingsApi();
+        $this->callbacks = new AdminCallbacks();
+
+        $this->setPages();
+        $this->setSubPages();
+        $this->settings
+            ->addPages($this->pages)
+            ->withSubPage('Dashboard')
+            ->addSubPage($this->sub_pages)
+            ->register();
+    }
+
+    public function setPages()
+    {
         $this->pages = [
             [
                 'page_title' => 'Muu Plugin',
                 'menu_title' => 'Muu',
                 'capability' => 'manage_options',
                 'menu_slug'  => 'muu_plugin',
-                'callback'   => function () {
-                    echo "<h1>Muu plugin</h1>";
-                },
+                'callback'   => [$this->callbacks, 'adminDashboard'],
                 'icon_url'   => 'dashicons-store',
                 'position'   => 110
             ]
         ];
+    }
+
+    public function setSubPages()
+    {
+
         $this->sub_pages = [
             [
                 'parent_slug' => 'muu_plugin',
@@ -38,9 +56,7 @@ class Admin extends BaseController
                 'menu_title'  => 'CPT',
                 'capability'  => 'manage_options',
                 'menu_slug'   => 'muu_cpt',
-                'callback'    => function () {
-                    echo "<h1>CPT Manager</h1>";
-                }
+                'callback'   => [$this->callbacks, 'cptManager'],
             ],
             [
                 'parent_slug' => 'muu_plugin',
@@ -48,9 +64,7 @@ class Admin extends BaseController
                 'menu_title'  => 'Taxonomies',
                 'capability'  => 'manage_options',
                 'menu_slug'   => 'muu_taxonomies',
-                'callback'    => function () {
-                    echo "<h1>Taxonomies Manager</h1>";
-                }
+                'callback'   => [$this->callbacks, 'taxonomiesManager'],
             ],
             [
                 'parent_slug' => 'muu_plugin',
@@ -58,29 +72,8 @@ class Admin extends BaseController
                 'menu_title'  => 'Widgets',
                 'capability'  => 'manage_options',
                 'menu_slug'   => 'muu_widgets',
-                'callback'    => function () {
-                    echo "<h1>Widgets Manager</h1>";
-                }
+                'callback'   => [$this->callbacks, 'widgetsManager'],
             ],
         ];
     }
-
-    public function register()
-    {
-        $this->settings->addPages($this->pages)
-            ->withSubPage('Dashboard')
-            ->addSubPage($this->sub_pages)
-            ->register();
-    }
-
-
-    // public function add_admin_pages()
-    // {
-    //     add_menu_page('Muu Plugin', 'Muu', 'manage_options', 'muu_plugin', [$this, 'admin_index'], 'dashicons-store', 110);
-    // }
-
-    // function admin_index()
-    // {
-    //     require_once "{$this->plugin_path}templates/admin.php";
-    // }
 }
