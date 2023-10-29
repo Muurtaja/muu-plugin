@@ -3,7 +3,7 @@
 * @package MuuPlugin
 */
 
-namespace Inc;
+namespace Inc\Base;
 
 class Activate
 {
