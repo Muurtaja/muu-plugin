@@ -5,15 +5,10 @@
 
 namespace Inc\Pages;
 
-class Admin
+use Inc\Base\BaseController;
+
+class Admin extends BaseController
 {
-
-    protected $plugin_path;
-
-    public function __construct()
-    {
-        $this->plugin_path = PLUGIN_PATH;
-    }
 
     public function register()
     {

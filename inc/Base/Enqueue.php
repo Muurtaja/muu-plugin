@@ -5,15 +5,8 @@
 
 namespace Inc\Base;
 
-class Enqueue
+class Enqueue extends BaseController
 {
-
-    protected $plugin_url;
-
-    public function __construct()
-    {
-        $this->plugin_url = PLUGIN_URL;
-    }
 
 
     public function register()
