@@ -24,6 +24,11 @@ class Admin extends BaseController
 
         $this->setPages();
         $this->setSubPages();
+
+        $this->setSettings();
+        $this->setSections();
+        $this->setFields();
+
         $this->settings
             ->addPages($this->pages)
             ->withSubPage('Dashboard')
@@ -56,7 +61,7 @@ class Admin extends BaseController
                 'menu_title'  => 'CPT',
                 'capability'  => 'manage_options',
                 'menu_slug'   => 'muu_cpt',
-                'callback'   => [$this->callbacks, 'cptManager'],
+                'callback'   => [$this->callbacks, 'adminCpt'],
             ],
             [
                 'parent_slug' => 'muu_plugin',
@@ -64,7 +69,7 @@ class Admin extends BaseController
                 'menu_title'  => 'Taxonomies',
                 'capability'  => 'manage_options',
                 'menu_slug'   => 'muu_taxonomies',
-                'callback'   => [$this->callbacks, 'taxonomiesManager'],
+                'callback'   => [$this->callbacks, 'adminTaxonomy'],
             ],
             [
                 'parent_slug' => 'muu_plugin',
@@ -72,8 +77,67 @@ class Admin extends BaseController
                 'menu_title'  => 'Widgets',
                 'capability'  => 'manage_options',
                 'menu_slug'   => 'muu_widgets',
-                'callback'   => [$this->callbacks, 'widgetsManager'],
+                'callback'   => [$this->callbacks, 'adminWidget'],
             ],
         ];
+    }
+    public function setSettings()
+    {
+
+        $args = [
+            [
+                'option_group' => 'muu_options_group',
+                'option_name'  => 'text_example',
+                'callback'  => [$this->callbacks, 'muuOptionsGroup'],
+            ],
+            [
+                'option_group' => 'muu_options_group',
+                'option_name'  => 'first_name',
+            ]
+        ];
+
+        $this->settings->setSettings($args);
+    }
+
+    public function setSections()
+    {
+        $args = [
+            [
+                'id'       => 'muu_section_index',
+                'title'    => 'Settings',
+                'callback' => [$this->callbacks, 'muuSectionGroup'],
+                'page'     => 'muu_plugin',
+
+            ]
+        ];
+        $this->settings->setSections($args);
+    }
+    public function setFields()
+    {
+        $args = [
+            [
+                'id'       => 'text_example',
+                'title'    => 'Text example',
+                'callback' => [$this->callbacks, 'muuTextExample'],
+                'page'     => 'muu_plugin',
+                'section'  => 'muu_section_index',
+                'args'     => [
+                    'label_for' => 'text_example',
+                    'class' => 'example-class',
+                ],
+            ],
+            [
+                'id'       => 'first_name',
+                'title'    => 'First Name',
+                'callback' => [$this->callbacks, 'muuFirstName'],
+                'page'     => 'muu_plugin',
+                'section'  => 'muu_section_index',
+                'args'     => [
+                    'label_for' => 'first_name',
+                    'class' => 'first-name',
+                ],
+            ]
+        ];
+        $this->settings->setFields($args);
     }
 }
