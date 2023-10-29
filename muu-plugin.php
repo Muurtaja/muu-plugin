@@ -33,8 +33,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Copyright 2005-2023 Automattic, Inc.
 */
 
+use Inc\Activate;
+use Inc\Deactivate;
+
 defined('ABSPATH') || die('Hey, you cannot access this file!');
 function_exists('add_action') || die('Hey, you cannot access this file!');
+
+if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
+    require_once dirname(__FILE__) . '/vendor/autoload.php';
+}
+
 
 class MuuPlugin
 {
@@ -101,11 +109,9 @@ if (class_exists('MuuPlugin')) {
 }
 
 
-require_once plugin_dir_path(__FILE__) . 'inc/muu-plugin-activate.php';
-require_once plugin_dir_path(__FILE__) . 'inc/muu-plugin-deactivate.php';
 
 // activation
-register_activation_hook(__FILE__, ['MuuPluginActivate', 'activate']);
+register_activation_hook(__FILE__, [Activate::class, 'activate']);
 
 // deactivation 
-register_deactivation_hook(__FILE__, ['MuuPluginDeactivate', 'deactivate']);
+register_deactivation_hook(__FILE__, [Deactivate::class, 'deactivate']);

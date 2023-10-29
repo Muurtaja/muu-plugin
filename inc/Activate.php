@@ -3,8 +3,9 @@
 * @package MuuPlugin
 */
 
+namespace Inc;
 
-class MuuPluginActivate
+class Activate
 {
     public static function activate()
     {

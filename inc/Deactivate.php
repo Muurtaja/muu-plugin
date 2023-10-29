@@ -3,8 +3,9 @@
 * @package MuuPlugin
 */
 
+namespace Inc;
 
-class MuuPluginDeactivate
+class Deactivate
 {
     public static function deactivate()
     {
